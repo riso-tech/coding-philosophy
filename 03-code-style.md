@@ -188,16 +188,167 @@
 - Sanitize output data
 - Protect sensitive information
 
+## Shell Script Standards
+
+### 1. Script Structure and Safety
+**Essential Script Headers**:
+```bash
+#!/bin/bash
+set -e  # Exit on any error
+```
+
+**Error Handling Philosophy**:
+- Use `set -e` for immediate error termination
+- Validate prerequisites before main execution
+- Provide clear error messages with context
+- Exit with appropriate error codes
+
+### 2. Logging and Output Standards
+**Structured Logging Functions**:
+```bash
+# Color constants for consistent output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+PURPLE='\033[0;35m'
+NC='\033[0m' # No Color
+
+# Standardized logging functions
+log_info() {
+    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} ${CYAN}[INFO]${NC} $1"
+}
+
+log_success() {
+    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}[SUCCESS]${NC} $1"
+}
+
+log_warning() {
+    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}[WARNING]${NC} $1"
+}
+
+log_error() {
+    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} ${RED}[ERROR]${NC} $1"
+}
+```
+
+**Output Formatting Principles**:
+- Timestamp all log messages for debugging
+- Use color coding for different log levels
+- Consistent message formatting across scripts
+- Clear visual separators for script sections
+
+### 3. Script Organization Patterns
+**Step-Based Execution**:
+```bash
+# ========================================
+# STEP 1: DESCRIPTIVE STEP NAME
+# ========================================
+echo ""
+log_info "Step 1/3: Clear description of what this step does..."
+```
+
+**Visual Section Separators**:
+- Use consistent comment headers with equal signs
+- Clear step numbering (Step X/Y format)
+- Empty lines for visual breathing space
+- Descriptive section titles
+
+### 4. Variable and State Management
+**Progress Tracking**:
+```bash
+# Progress tracking variables
+COMPONENT_INSTALLED=false
+INSTALLED_ITEMS=()
+MAX_WAIT=30
+WAIT_COUNT=0
+```
+
+**Environment Handling**:
+- Get current user context: `CURRENT_USER=$(whoami)`
+- Set environment variables with defaults: `${VAR:-default_value}`
+- Validate environment before proceeding
+- Clear variable initialization
+
+### 5. Command Execution Patterns
+**Safe Command Execution**:
+```bash
+# Check command availability
+if ! command -v required_tool &> /dev/null; then
+    log_error "Required tool not found"
+    exit 1
+fi
+
+# Conditional command execution with logging
+if some_command 2>/dev/null; then
+    log_success "✓ Command succeeded"
+else
+    log_warning "⚠ Command failed (continuing anyway)"
+fi
+```
+
+**Wait and Retry Patterns**:
+```bash
+# Wait for conditions with timeout
+while [ ! -d "$TARGET_DIR" ] && [ $WAIT_COUNT -lt $MAX_WAIT ]; do
+    log_info "Waiting for condition..."
+    sleep 1
+    WAIT_COUNT=$((WAIT_COUNT + 1))
+done
+```
+
+### 6. User Experience Guidelines
+**Visual Appeal**:
+- Use Unicode symbols for status (✓, ⚠, 🚀, 🎉)
+- Color-coded borders for script sections
+- Progressive disclosure of information
+- Clear success/failure indicators
+
+**Informative Messages**:
+- Always explain what the script is doing
+- Provide context for wait operations
+- Show progress for multi-step operations
+- Include helpful tips and next steps
+
+### 7. Directory and File Operations
+**Safe File Operations**:
+```bash
+# Create directories with error handling
+mkdir -p /target/directory || {
+    log_error "Failed to create directory"
+    exit 1
+}
+
+# Copy with verification
+if [ -d ./source ]; then
+    find ./source -mindepth 1 -exec cp -r {} /target/ \;
+    log_success "✓ Files copied successfully"
+else
+    log_warning "⚠ Source directory not found"
+fi
+```
+
+**Path Management**:
+- Always use absolute paths when possible
+- Validate paths before operations
+- Handle missing directories gracefully
+- Clear ownership and permission handling
+
+### 8. Script Portability Considerations
+**Cross-Platform Compatibility**:
+- Test command availability before use
+- Handle different package managers
+- Account for different tool versions
+- Provide fallback options
+
+**Environment Assumptions**:
+- Document required tools and versions
+- Validate runtime environment
+- Clear dependency management
+- Graceful degradation when possible
+
 [TO BE SUPPLEMENTED LATER]: Language-specific style guides, linting tool configurations
-
-## Formatting Standards
-
-### 1. Consistency Principles
-**Visual Structure**:
-- Consistent indentation throughout project
-- Clear section separations
-- Aligned assignments when beneficial
-- Consistent spacing around operators
 
 **Line Management**:
 - Reasonable line length limits

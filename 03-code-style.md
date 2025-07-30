@@ -29,6 +29,54 @@
 - Use domain-specific terminology consistently
 - Abbreviations only for well-known industry standards
 
+### 4. Abstraction-First Naming for Multiple Cases
+**Principle**: When supporting multiple variants/cases, use abstract interface names with switch-case implementation rather than variant-specific function names.
+
+**Pattern from Session**: Multi-OS support analysis revealed this scalable approach
+- Use consistent function names across all variants: `install_packages()` not `apt_install()` vs `apk_install()`
+- Abstract variant-specific details behind common interfaces
+- File naming that indicates multi-case intent: `install-common.sh`, `detect-environment.sh`
+
+**Universal Application**:
+- **Multi-OS Support**: `install_packages()`, `detect_os()`, `configure_shell()`
+- **Multi-Language Projects**: `setup_linter()`, `run_tests()`, `build_project()`
+- **Multi-Environment**: `deploy_app()`, `configure_database()`, `setup_monitoring()`
+- **Multi-User Context**: `setup_permissions()`, `configure_workspace()`, `install_tools()`
+
+**Implementation Pattern**:
+```bash
+# Good - Abstract interface with switch-case optimization
+install_packages() {
+    case "$OS_TYPE" in
+        "alpine") apk add --no-cache "$@" ;;
+        "debian"|"ubuntu") apt-get update && apt-get install -y "$@" ;;
+        "fedora"|"centos") yum install -y "$@" ;;
+        *) log_error "Unsupported OS: $OS_TYPE"; exit 1 ;;
+    esac
+}
+
+setup_linter() {
+    case "$PROJECT_TYPE" in
+        "javascript"|"typescript") npm install -D eslint prettier ;;
+        "python") pip install flake8 black ;;
+        "go") go install golang.org/x/tools/cmd/goimports@latest ;;
+        *) log_warning "No linter configuration for: $PROJECT_TYPE" ;;
+    esac
+}
+
+# Avoid - Variant-specific naming (creates code duplication)
+apt_install_packages() { ... }
+yum_install_packages() { ... }
+javascript_setup_linter() { ... }
+python_setup_linter() { ... }
+```
+
+**Benefits**:
+- **Scalability**: Easy to add new variants without changing interface
+- **Maintainability**: Single function to maintain instead of multiple variants
+- **Consistency**: Same interface regardless of underlying implementation
+- **Testability**: One interface to test with different contexts
+
 ## Code Structure Patterns
 
 ### 1. Function Design Philosophy

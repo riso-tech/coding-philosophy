@@ -32,7 +32,28 @@ feature-or-module/
 - Better error isolation
 - Modular testing possible
 
-### 3. Configuration Management Strategy
+### 3. Conditional Structure Respect
+**Principle**: Respect existing project structure rather than forcing templates.
+
+**Learned from Session**: "không cần template, mỗi dự án mỗi khác"
+- Check for existing files before creating new ones
+- Enhance existing structure rather than replace it
+- Provide options without mandating specific layouts
+
+**Implementation**:
+```bash
+# Check before creating
+[ ! -f "README.md" ] && create_readme
+[ ! -d ".github" ] && setup_github_workflows
+[ ! -f "package.json" ] && [ "$ENABLE_NODE" = "true" ] && init_node_project
+```
+
+**Why Better**:
+- Works with diverse project needs
+- Non-intrusive enhancement
+- Preserves user's established patterns
+
+### 4. Configuration Management Strategy
 **Principle**: Separate configuration data from implementation logic.
 
 **Patterns**:

@@ -24,7 +24,20 @@
 - Provide graceful fallbacks for optional dependencies
 - Use composition over inheritance when possible
 
-### 3. Idempotent Operations
+### 3. Constraint-Driven Development
+**Principle**: Embrace constraints as creative catalysts rather than limitations.
+
+**Learned from Session**: "không cần template, mỗi dự án mỗi khác" led to better conditional approach
+- Real-world constraints often reveal better solutions than theoretical perfection
+- User limitations drive more practical, maintainable implementations
+- Performance constraints force architectural clarity
+
+**Implementation**:
+- Start with user constraints and work backwards to solution
+- Use limitations to eliminate over-engineering
+- Validate assumptions against real usage patterns
+
+### 4. Idempotent Operations
 **Principle**: All operations must be safe to run multiple times without causing side effects.
 
 **Why**: Ensure reliability, easier debugging, safe when re-running.

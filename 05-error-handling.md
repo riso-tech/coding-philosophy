@@ -37,6 +37,26 @@
 - Manual intervention points
 - Recovery validation steps
 
+### 4. Conditional Error Handling
+**Pattern from Session**: Handle missing dependencies gracefully
+
+**Implementation Strategy**:
+```bash
+# Check before failing
+if [ ! -f "package.json" ] && [ "$ENABLE_NODE" = "true" ]; then
+    log_info "No package.json found, initializing Node.js project..."
+    npm init -y
+elif [ -f "package.json" ]; then
+    log_info "Existing package.json found, skipping initialization"
+fi
+```
+
+**Benefits**:
+- Avoids destructive operations on existing projects
+- Provides context-aware error messages
+- Enables graceful enhancement rather than replacement
+- Reduces user frustration from unnecessary conflicts
+
 ## Input Validation Approach
 
 ### 1. Validation Philosophy

@@ -36,37 +36,20 @@
 - Performance validation against real workloads
 - Documentation testing with fresh eyes
 
-## Testing Strategy
+### 4. Pattern-Driven Development
+**Principle**: Leverage proven patterns before creating new solutions
 
-### 1. Testing Philosophy
-**Comprehensive Coverage**: Test at multiple levels with different perspectives
+**Process from Session**:
+1. **Research Phase**: "trong git stash tôi đang cất feature ohmyzsh" - Study existing implementations
+2. **Pattern Extraction**: Identify reusable components (multi-OS detection, test architecture)
+3. **Adaptation**: Apply patterns to new context rather than copy-paste
+4. **Validation**: Test adapted patterns against proven baseline
 
-**Test Types**:
-- **Unit Tests**: Individual component validation
-- **Integration Tests**: Component interaction validation
-- **System Tests**: End-to-end workflow validation
-- **Performance Tests**: Resource usage and timing validation
-- **Regression Tests**: Prevent previously fixed issues
-
-### 2. Test-Driven Considerations
-**When to Use TDD**:
-- Complex business logic with clear requirements
-- Critical functionality requiring high reliability
-- APIs với well-defined contracts
-- Bug fixes to prevent regression
-
-**When to Use BDD/Exploration**:
-- Unclear requirements needing exploration
-- User interface development
-- Integration với external systems
-- Proof-of-concept development
-
-### 3. Test Maintenance
-**Sustainable Testing**:
-- Keep tests simple và focused
-- Regular test suite cleanup
-- Test documentation và naming standards
-- Performance monitoring of test suites
+**Benefits**:
+- Faster development with lower risk
+- Consistent architecture across features
+- Leverages institutional knowledge
+- Reduces debugging time for known patterns
 
 ## Code Review Process
 
